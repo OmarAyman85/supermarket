@@ -103,6 +103,18 @@ class Category{
 //--------------------------------------------------------------------------------
 //----------------DELETING A CATEGORY --------------------------------------------
 //--------------------------------------------------------------------------------
+    public function destroy(int $id) : int{
+        $sql = "DELETE FROM categories
+                WHERE id = :id";
+
+        $stmt = $this->conn->prepare($sql);
+
+        $stmt->bindValue(":id", $id, PDO::PARAM_INT);
+
+        $stmt->execute();
+
+        return $stmt->rowCount();
+    }
 
 }
 

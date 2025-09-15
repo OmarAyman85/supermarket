@@ -18,7 +18,10 @@ $router = [
     ],
     'PUT' => [
         '/categories/{id}' => 'update'
-    ]
+    ],
+    'DELETE' => [
+        '/categories/{id}' => 'destroy'
+    ],
 ];
 
 

@@ -77,11 +77,20 @@ class CategoryController{
         $rows = $this->categoryModel->update($category ,$data);
 
         echo json_encode(['Category with the id: ' . $id . " is updated successfully",
-                            "rows" => $rows], 
+                            "rows affected" => $rows], 
                             JSON_PRETTY_PRINT);
     }
     
     //DELETE /categories/{:id}
+    public function destroy(int $id){
+
+        $rows = $this->categoryModel->destroy($id);
+        
+        echo json_encode(['Category with the id: ' . $id . " is deleted successfully",
+                        "rows affected" => $rows], 
+                        JSON_PRETTY_PRINT);
+    }
+
 }
 
 ?>

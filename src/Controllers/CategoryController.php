@@ -10,12 +10,29 @@ class CategoryController{
         $this->categoryModel = $model;
     }
 
+    //POST /categories
+    public function store(array $data){
+
+        $returned_id = $this->categoryModel->create($data);
+
+        if($returned_id){
+            echo json_encode(['message' => 'category created successfully with id: ' . $returned_id], JSON_PRETTY_PRINT);
+        } else {
+            echo json_encode(['message' => 'category failed to be created'], JSON_PRETTY_PRINT);
+        }
+        
+    }
+
     //GET /categories
     public function index(){
         $categories = $this->categoryModel->getAll();
         header('Content-Type: application/json');
         echo json_encode($categories, JSON_PRETTY_PRINT);
     }
+
+    //PUT /categories/{:id}
+    
+    //DELETE /categories/{:id}
 }
 
 ?>

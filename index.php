@@ -18,6 +18,9 @@ $database = new Database();
 $categoryModel = new Category($database);
 
 $categoryController = new CategoryController($categoryModel);
+
+$categoryController->store(['name'=>'DAIRY']);
 $categoryController->index();
+
 echo "\n";
 ?>

@@ -2,7 +2,7 @@
     "name": "omar/1_super-market",
     "autoload": {
         "psr-4": {
-            "Omar\\1SuperMarket\\": "src/"
+            "SuperMarket\\": "src/"
         }
     },
     "authors": [
@@ -11,5 +11,8 @@
             "email": "omar.shivy85@gmail.com"
         }
     ],
-    "require": {}
+    "version": "1.0.0",
+    "require": {
+        "vlucas/phpdotenv": "^5.6"
+    }
 }

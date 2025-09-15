@@ -44,6 +44,13 @@ class CategoryController{
         header('Content-Type: application/json');
         echo json_encode($categories, JSON_PRETTY_PRINT);
     }
+    
+    //GET /categories/{:id}
+    public function find(int $id){
+        $category = $this->categoryModel->find($id);
+        header('Content-Type: application/json');
+        echo json_encode($category, JSON_PRETTY_PRINT);
+    }
 
     //PUT /categories/{:id}
     

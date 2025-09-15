@@ -10,13 +10,13 @@ $controller = new CategoryController();
 
 $router = [
     'GET' => [
-        '/categories' => fn() => $controller->index(),
+        '/categories' => 'index',          
+        '/categories/{id}' => 'find',      
     ],
     'POST' => [
-        '/categories' => fn() => $controller->store(
-            (array) json_decode(file_get_contents('php://input'), true)
-        ),
+        '/categories' => 'store',          
     ],
 ];
+
 
 return $router;

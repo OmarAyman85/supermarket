@@ -16,8 +16,12 @@ class CategoryController{
         $returned_id = $this->categoryModel->create($data);
 
         if($returned_id){
+            http_response_code(201);
+            header('Content-Type: application/json');
             echo json_encode(['message' => 'category created successfully with id: ' . $returned_id], JSON_PRETTY_PRINT);
         } else {
+            http_response_code(500);
+            header('Content-Type: application/json');
             echo json_encode(['message' => 'category failed to be created'], JSON_PRETTY_PRINT);
         }
         
@@ -31,7 +35,7 @@ class CategoryController{
     }
 
     //PUT /categories/{:id}
-    
+
     //DELETE /categories/{:id}
 }
 

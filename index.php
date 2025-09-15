@@ -7,6 +7,7 @@ use SuperMarket\Controllers\CategoryController;
 
 require __DIR__ . '/vendor/autoload.php';
 
+set_error_handler([ErrorHandler::class, 'handleError']);
 set_exception_handler([ErrorHandler::class, 'handleException']);
 
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
@@ -19,7 +20,7 @@ $categoryModel = new Category($database);
 
 $categoryController = new CategoryController($categoryModel);
 
-$categoryController->store(['name'=>'DAIRY']);
+$categoryController->store(["name" => 'ELECTRONICS']);
 $categoryController->index();
 
 echo "\n";

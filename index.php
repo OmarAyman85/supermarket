@@ -1,15 +1,16 @@
 <?php
 
 use SuperMarket\Database\Database;
+use SuperMarket\Errors\ErrorHandler;
 
 require __DIR__ . '/vendor/autoload.php';
 
+set_exception_handler([ErrorHandler::class, 'handleException']);
+
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
 $dotenv->load();
-echo "I AM HERE 1 \n";
 
 $database = new Database();
 $conn = $database->getConnection();
-
 
 ?>

@@ -1,0 +1,15 @@
+{
+    "name": "omar/1_super-market",
+    "autoload": {
+        "psr-4": {
+            "Omar\\1SuperMarket\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "OmarAyman85",
+            "email": "omar.shivy85@gmail.com"
+        }
+    ],
+    "require": {}
+}

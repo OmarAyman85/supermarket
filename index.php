@@ -1,9 +1,6 @@
 <?php
 
-use SuperMarket\Database\Database;
 use SuperMarket\Errors\ErrorHandler;
-use SuperMarket\Models\Category;
-use SuperMarket\Controllers\CategoryController;
 
 require __DIR__ . '/vendor/autoload.php';
 
@@ -13,15 +10,16 @@ set_exception_handler([ErrorHandler::class, 'handleException']);
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
 $dotenv->load();
 
-$database = new Database();
-// $conn = $database->getConnection();
 
-$categoryModel = new Category($database);
+$router = require __DIR__ . '/routes/web.php';
 
-$categoryController = new CategoryController($categoryModel);
+$requestUri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+$requestMethod = $_SERVER['REQUEST_METHOD'];
 
-$categoryController->store(["name" => 'ELECTRONICS']);
-$categoryController->index();
-
-echo "\n";
-?>
+if (isset($router[$requestMethod][$requestUri])) {
+    $router[$requestMethod][$requestUri]();
+} else {
+    http_response_code(404);
+    header('Content-Type: application/json');
+    echo json_encode(['message' => 'Page Not Found']);
+}

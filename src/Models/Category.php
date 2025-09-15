@@ -6,9 +6,11 @@ use PDO;
 
 class Category{
     private PDO $conn;
+    private Database $database;
 
-    public function __construct(Database $database){
-        $this->conn = $database->getCOnnection();
+    public function __construct(){
+        $this->database = new Database();
+        $this->conn = $this->database->getCOnnection();
     }
 
 //--------------------------------------------------------------------------------
@@ -66,7 +68,6 @@ class Category{
 //--------------------------------------------------------------------------------
 //----------------UPDATING A CATEGORY NAME----------------------------------------
 //--------------------------------------------------------------------------------
-    
 
 //--------------------------------------------------------------------------------
 //----------------DELETING A CATEGORY --------------------------------------------

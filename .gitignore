@@ -1,5 +1,6 @@
 .env
 vendor/
 storage/logs/
-brainstorming.txt
 
+brainstorming.txt
+.gitignore

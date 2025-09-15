@@ -18,7 +18,13 @@ class Database{
         $dsn = "{$this->config['connection']}:host={$this->config['host']};dbname={$this->config['database']};port={$this->config['port']};charset={$this->config['charset']}";
 
         try{
-        self::$connection = new PDO($dsn, $this->config['username'], $this->config['password']);             
+        self::$connection = new PDO($dsn, 
+        $this->config['username'], 
+        $this->config['password'], 
+        [
+            PDO::ATTR_EMULATE_PREPARES => false,
+            PDO::ATTR_STRINGIFY_FETCHES => false
+        ]);             
         }
         catch(PDOException $e){
             throw new \Exception('Database connection failed: ' . $e->getMessage());

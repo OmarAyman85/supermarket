@@ -34,8 +34,7 @@ class CategoryController{
             http_response_code(500);
             header('Content-Type: application/json');
             echo json_encode(['message' => 'category failed to be created ...'], JSON_PRETTY_PRINT);
-        }
-        
+        }   
     }
 
     //GET /categories
@@ -48,11 +47,39 @@ class CategoryController{
     //GET /categories/{:id}
     public function find(int $id){
         $category = $this->categoryModel->find($id);
+        if(! $category){
+            http_response_code(404);
+            echo json_encode(["message" => "Product not found"], JSON_PRETTY_PRINT);
+            return;
+        }
         header('Content-Type: application/json');
         echo json_encode($category, JSON_PRETTY_PRINT);
     }
 
     //PUT /categories/{:id}
+    public function update(int $id, array $data){
+
+        $errors = $this->validator->getCategoryValidationError($data);
+
+        if(!empty($errors)){
+            http_response_code(422);
+            echo json_encode(["errors" => $errors], JSON_PRETTY_PRINT);
+            return;
+        }
+
+        $category = $this->categoryModel->find($id);
+        if(! $category){
+            http_response_code(404);
+            echo json_encode(["message" => "Product not found"], JSON_PRETTY_PRINT);
+            return;
+        }
+        
+        $rows = $this->categoryModel->update($category ,$data);
+
+        echo json_encode(['Category with the id: ' . $id . " is updated successfully",
+                            "rows" => $rows], 
+                            JSON_PRETTY_PRINT);
+    }
     
     //DELETE /categories/{:id}
 }

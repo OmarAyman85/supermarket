@@ -86,7 +86,20 @@ class Category{
 //--------------------------------------------------------------------------------
 //----------------UPDATING A CATEGORY NAME----------------------------------------
 //--------------------------------------------------------------------------------
+    public function update(array $current, array $new) : int{
+        $sql = "UPDATE categories
+                SET name = :name
+                WHERE id = :id";
 
+        $stmt = $this->conn->prepare($sql);
+
+        $stmt->bindValue(":name", $new['name'] ?? $current['name'], PDO::PARAM_STR);
+        $stmt->bindValue(":id", $current['id'], PDO::PARAM_INT);
+
+        $stmt->execute();
+
+        return $stmt->rowCount();
+    }
 //--------------------------------------------------------------------------------
 //----------------DELETING A CATEGORY --------------------------------------------
 //--------------------------------------------------------------------------------

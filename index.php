@@ -1,6 +1,7 @@
 <?php
 
 use SuperMarket\Errors\ErrorHandler;
+use SuperMarket\Controllers\CategoryController;
 
 require __DIR__ . '/vendor/autoload.php';
 
@@ -29,20 +30,27 @@ if (isset($router[$requestMethod])) {
         $match = true;
 
         foreach ($pathParts as $i => $part) {
-            if (preg_match('/^{(.+)}$/', $part, $paramMatch)) {
-                $params[$paramMatch[1]] = $uriParts[$i];
+            if (preg_match('/^{(.+)}$/', $part)) {
+                $params[] = $uriParts[$i];
             } elseif ($part !== $uriParts[$i]) {
                 $match = false;
                 break;
             }
-        }
+}
 
         if ($match) {
-            $controller = new \SuperMarket\Controllers\CategoryController();
-            call_user_func_array([$controller, $action], $params);
-            $matched = true;
-            break;
-        }
+            $controller = new CategoryController();
+            if (in_array($requestMethod, ['POST', 'PUT', 'PATCH'])) {
+                $data = json_decode(file_get_contents("php://input"), true) ?? [];
+                call_user_func_array([$controller, $action], array_merge($params, [$data]));
+            } else {
+                call_user_func_array([$controller, $action], $params);
+            }
+
+    $matched = true;
+    break;
+}
+
     }
 }
 

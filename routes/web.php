@@ -16,6 +16,9 @@ $router = [
     'POST' => [
         '/categories' => 'store',          
     ],
+    'PUT' => [
+        '/categories/{id}' => 'update'
+    ]
 ];
 
 

@@ -1,4 +1,6 @@
 .env
+.env.testing
+
 vendor/
 storage/logs/
 

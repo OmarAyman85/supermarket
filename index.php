@@ -1,13 +1,15 @@
 <?php
 
 use SuperMarket\Errors\ErrorHandler;
+use Dotenv\Dotenv;
 
 require __DIR__ . '/vendor/autoload.php';
 
 set_error_handler([ErrorHandler::class, 'handleError']);
 set_exception_handler([ErrorHandler::class, 'handleException']);
 
-$dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
+$envFile = getenv('APP_ENV') === 'testing' ? '.env.testing' : '.env';
+$dotenv = Dotenv::createImmutable(__DIR__ , $envFile, true);
 $dotenv->load();
 
 

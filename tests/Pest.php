@@ -1,13 +1,13 @@
 <?php
-putenv('APP_ENV=testing');
-$_ENV['APP_ENV'] = 'testing';
-$_SERVER['APP_ENV'] = 'testing';
-
 require_once __DIR__ . '/../vendor/autoload.php';
 
 use Dotenv\Dotenv;
 
-$dotenv = Dotenv::createMutable(__DIR__ . '/..', '.env.testing'); 
+$appEnv = getenv('APP_ENV') ?: 'local';
+
+$envFile = $appEnv === 'testing' ? '.env.testing' : '.env';
+
+$dotenv = Dotenv::createMutable(__DIR__ . '/..', $envFile);
 $dotenv->load();
 
 /*

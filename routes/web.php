@@ -14,6 +14,7 @@ $router = [
         '/categories' => [CategoryController::class, 'index'],
         '/categories/{id}' => [CategoryController::class, 'find'],
         '/products' => [ProductController::class, 'index'],
+        '/products/{id}' => [ProductController::class, 'find'],
     ],
     'POST' => [
         '/categories' => [CategoryController::class, 'store'],

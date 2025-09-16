@@ -46,6 +46,19 @@ class ProductController{
         header('Content-Type: application/json');
         echo json_encode($categories, JSON_PRETTY_PRINT);
     }
+
+    //GET /products/{:id}
+    public function find(int $id){
+        $product = $this->productModel->find($id);
+        if(! $product){
+            http_response_code(404);
+            echo json_encode(["message" => "Product not found"], JSON_PRETTY_PRINT);
+            return;
+        }
+        header('Content-Type: application/json');
+        echo json_encode($product, JSON_PRETTY_PRINT);
+    }
+
 }
 
 ?>

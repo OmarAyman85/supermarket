@@ -51,6 +51,24 @@ class Product{
 
         return $data;
     }
+//--------------------------------------------------------------------------------
+//----------------FINDING A PRODUCT-----------------------------------------------
+//--------------------------------------------------------------------------------
+    public function find(int $id) : array | false {
+        $sql = "SELECT *
+                FROM products
+                WHERE id = :id";
+
+        $stmt = $this->conn->prepare($sql);
+
+        $stmt->bindValue(":id", $id, PDO::PARAM_INT);
+
+        $stmt->execute();
+
+        $data = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        return $data;
+    }
 }
 
 ?>

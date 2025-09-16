@@ -70,7 +70,7 @@ class CategoryController{
         $category = $this->categoryModel->find($id);
         if(! $category){
             http_response_code(404);
-            echo json_encode(["message" => "Product not found"], JSON_PRETTY_PRINT);
+            echo json_encode(["message" => "Category not found"], JSON_PRETTY_PRINT);
             return;
         }
         

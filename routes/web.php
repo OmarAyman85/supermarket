@@ -21,10 +21,12 @@ $router = [
         '/products'   => [ProductController::class, 'store'],
     ],
     'PUT' => [
-        '/categories/{id}' => [CategoryController::class, 'update']
+        '/categories/{id}' => [CategoryController::class, 'update'],
+        '/products/{id}' => [ProductController::class, 'update']
     ],
     'DELETE' => [
-        '/categories/{id}' => [CategoryController::class, 'destroy']
+        '/categories/{id}' => [CategoryController::class, 'destroy'],
+        '/products/{id}' => [ProductController::class, 'destroy']
     ],
 ];
 

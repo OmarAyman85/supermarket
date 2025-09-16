@@ -52,7 +52,7 @@ class Product{
         return $data;
     }
 //--------------------------------------------------------------------------------
-//----------------FINDING A PRODUCT-----------------------------------------------
+//----------------FETCHING A PRODUCT----------------------------------------------
 //--------------------------------------------------------------------------------
     public function find(int $id) : array | false {
         $sql = "SELECT *
@@ -68,6 +68,40 @@ class Product{
         $data = $stmt->fetch(PDO::FETCH_ASSOC);
 
         return $data;
+    }
+//--------------------------------------------------------------------------------
+//----------------UPDATING A PRODUCT----------------------------------------------
+//--------------------------------------------------------------------------------
+    public function update (array $current, array $new) : int {
+        $sql = "UPDATE products
+                SET name = :name, price = :price, category_id = :category_id
+                WHERE id = :id";
+
+        $stmt = $this->conn->prepare($sql);
+
+        $stmt->bindValue(":name", $new['name'] ?? $current['name'], PDO::PARAM_STR);
+        $stmt->bindValue(":price", $new['price'] ?? $current['price'], PDO::PARAM_INT);
+        $stmt->bindValue(":category_id", $new['category_id'] ?? $current['category_id'], PDO::PARAM_INT);
+        $stmt->bindValue(":id", $current['id'], PDO::PARAM_INT);
+
+        $stmt->execute();
+
+        return $stmt->rowCount();
+    }
+//--------------------------------------------------------------------------------
+//----------------DELETING A PRODUCT ---------------------------------------------
+//--------------------------------------------------------------------------------
+    public function destroy(int $id) : int{
+        $sql = "DELETE FROM products
+                WHERE id = :id";
+
+        $stmt = $this->conn->prepare($sql);
+
+        $stmt->bindValue(":id", $id, PDO::PARAM_INT);
+
+        $stmt->execute();
+
+        return $stmt->rowCount();
     }
 }
 

@@ -1,6 +1,7 @@
 <?php
 
 use SuperMarket\Controllers\CategoryController;
+use SuperMarket\Controllers\ProductController;
 use SuperMarket\Models\Category;
 use SuperMarket\Database\Database;
 
@@ -10,17 +11,18 @@ $controller = new CategoryController();
 
 $router = [
     'GET' => [
-        '/categories' => 'index',          
-        '/categories/{id}' => 'find',      
+        '/categories' => [CategoryController::class, 'index'],
+        '/categories/{id}' => [CategoryController::class, 'find'],
     ],
     'POST' => [
-        '/categories' => 'store',          
+        '/categories' => [CategoryController::class, 'store'],
+        '/products'   => [ProductController::class, 'store'],
     ],
     'PUT' => [
-        '/categories/{id}' => 'update'
+        '/categories/{id}' => [CategoryController::class, 'update']
     ],
     'DELETE' => [
-        '/categories/{id}' => 'destroy'
+        '/categories/{id}' => [CategoryController::class, 'destroy']
     ],
 ];
 

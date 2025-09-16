@@ -1,0 +1,44 @@
+<?php
+namespace SuperMarket\Controllers;
+
+use SuperMarket\Models\Product;
+use SuperMarket\Helpers\Validator;
+
+class ProductController{
+    private Product $productModel;
+    private Validator $validator;
+
+    public function __construct(){
+        $this->productModel = new Product();
+        $this->validator = new Validator();
+    }
+
+    //POST /products
+    public function store(array $data){
+
+        $errors = array_merge(
+            $this->validator->getProductValidationError($data),
+            $this->validator->categoryExistanceValidation($data)
+        );
+
+        if(!empty($errors)){
+            http_response_code(422);
+            echo json_encode(["errors" => $errors], JSON_PRETTY_PRINT);
+            return;
+        }
+
+        $returned_id = $this->productModel->create($data);
+
+        if($returned_id && $returned_id != 0){
+            http_response_code(201);
+            header('Content-Type: application/json');
+            echo json_encode(['message' => 'product created successfully with id: ' . $returned_id], JSON_PRETTY_PRINT);
+        } else {
+            http_response_code(500);
+            header('Content-Type: application/json');
+            echo json_encode(['message' => 'product failed to be created ...'], JSON_PRETTY_PRINT);
+        } 
+    }
+}
+
+?>

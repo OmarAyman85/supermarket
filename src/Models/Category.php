@@ -28,16 +28,6 @@ class Category{
 
         return $this->conn->lastInsertId();
     }
-
-    // public function create(string $name): bool{
-    //     $sql="INSERT INTO categories (name)
-    //           VALUES(:name)";
-
-    //     $stmt = $this->conn->prepare($sql);
-
-    //     return $stmt->execute(['name' => $name]);
-    // }
-
 //--------------------------------------------------------------------------------
 //----------------FETCHING ALL CATEGORIES-----------------------------------------
 //--------------------------------------------------------------------------------
@@ -55,16 +45,6 @@ class Category{
 
         return $data;
     }
-
-    // public function getAll() : array {
-    //     $sql = "SELECT *
-    //             FROM categories";
-
-    //     $stmt = $this->conn->query($sql);
-
-    //     return $stmt->fetchAll();
-    // }
-
 //--------------------------------------------------------------------------------
 //----------------FINDING A CATEGORY----------------------------------------------
 //--------------------------------------------------------------------------------

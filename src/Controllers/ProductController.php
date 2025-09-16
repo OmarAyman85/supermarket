@@ -39,6 +39,13 @@ class ProductController{
             echo json_encode(['message' => 'product failed to be created ...'], JSON_PRETTY_PRINT);
         } 
     }
+
+    //GET /products
+    public function index(){
+        $categories = $this->productModel->getAll();
+        header('Content-Type: application/json');
+        echo json_encode($categories, JSON_PRETTY_PRINT);
+    }
 }
 
 ?>

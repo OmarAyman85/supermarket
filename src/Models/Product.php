@@ -31,8 +31,26 @@ class Product{
 
             return $this->conn->lastInsertId();
         
-}
+    }
+//--------------------------------------------------------------------------------
+//----------------FETCHING ALL PRODUCTS-------------------------------------------
+//--------------------------------------------------------------------------------
+    public function getAll() : array {
+        $sql = "SELECT p.id AS product_id, p.category_id AS category_id, c.name AS category_name, p.name AS product_name, p.price AS product_price, p.created_at AS product_created_at, c.id AS category_id, c.created_at AS category_created_at 
+                FROM products AS p
+                JOIN categories AS c
+                ON p.category_id = c.id";
 
+        $stmt = $this->conn->query($sql);
+
+        $data = [];
+
+        while($row = $stmt->fetch(PDO::FETCH_ASSOC)){
+            $data[] = $row;
+        }
+
+        return $data;
+    }
 }
 
 ?>

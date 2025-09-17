@@ -5,10 +5,11 @@ use SuperMarket\Database\Database;
 
 //RESTART THE ENVIRONMENT "DATABASE"
 beforeAll(function(){
-        $database = new Database();
-        $conn = $database->getCOnnection();
-        $conn->exec("DELETE FROM categories");
-    });
+    $database = new Database();
+    $conn = $database->getConnection();
+    $conn->exec("DELETE FROM products");
+    $conn->exec("DELETE FROM categories");
+});
 
 // CREATING AND FETCHING A CATEGORY
 it('can create a category in the database and find it by the ID', function(){

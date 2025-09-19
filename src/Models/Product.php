@@ -2,11 +2,14 @@
 namespace SuperMarket\Models;
 
 use SuperMarket\Database\Database;
+use SuperMarket\Helpers\Logger;
 use PDO;
 
 class Product{
     private PDO $conn;
     private Database $database;
+
+    use Logger;
 
     public function __construct(){
         $this->database = new Database();
@@ -29,8 +32,11 @@ class Product{
             
             $stmt->execute();
 
-            return $this->conn->lastInsertId();
-        
+            $product_Id = $this->conn->lastInsertId();
+
+            $this->logEvent("NEW PRODUCT ADDED WITH THE ID : $product_Id");
+
+            return $product_Id;
     }
 //--------------------------------------------------------------------------------
 //----------------FETCHING ALL PRODUCTS-------------------------------------------
@@ -49,6 +55,8 @@ class Product{
             $data[] = $row;
         }
 
+        $this->logEvent("FETCHING ALL PRODUCTS IS REQUESTED ...");
+
         return $data;
     }
 //--------------------------------------------------------------------------------
@@ -66,6 +74,8 @@ class Product{
         $stmt->execute();
 
         $data = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        $this->logEvent("PRODUCT WITH THE ID : $id IS FETCHED.");
 
         return $data;
     }
@@ -86,6 +96,8 @@ class Product{
 
         $stmt->execute();
 
+        $this->logEvent("PRODUCT WITH THE ID : {$current['id']} IS UPDATED.");
+
         return $stmt->rowCount();
     }
 //--------------------------------------------------------------------------------
@@ -100,6 +112,8 @@ class Product{
         $stmt->bindValue(":id", $id, PDO::PARAM_INT);
 
         $stmt->execute();
+
+        $this->logEvent("PRODUCT WITH THE ID : $id IS DELETED.");
 
         return $stmt->rowCount();
     }

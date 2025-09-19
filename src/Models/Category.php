@@ -2,11 +2,14 @@
 namespace SuperMarket\Models;
 
 use SuperMarket\Database\Database;
+use SuperMarket\Helpers\Logger;
 use PDO;
 
 class Category{
     private PDO $conn;
     private Database $database;
+
+    use Logger;
 
     public function __construct(){
         $this->database = new Database();
@@ -26,7 +29,11 @@ class Category{
 
         $stmt->execute();
 
-        return $this->conn->lastInsertId();
+        $category_Id = $this->conn->lastInsertId();
+
+        $this->logEvent("NEW CATEGORY ADDED WITH THE ID : $category_Id");
+
+        return $category_Id;
     }
 //--------------------------------------------------------------------------------
 //----------------FETCHING ALL CATEGORIES-----------------------------------------
@@ -42,6 +49,8 @@ class Category{
         while($row = $stmt->fetch(PDO::FETCH_ASSOC)){
             $data[] = $row;
         }
+
+        $this->logEvent("FETCHING ALL CATEGORIES IS REQUESTED ...");
 
         return $data;
     }
@@ -61,6 +70,8 @@ class Category{
 
         $data = $stmt->fetch(PDO::FETCH_ASSOC);
 
+        $this->logEvent("CATEGORY WITH THE ID : $id IS FETCHED.");
+
         return $data;
     }
 //--------------------------------------------------------------------------------
@@ -78,6 +89,8 @@ class Category{
 
         $stmt->execute();
 
+        $this->logEvent("CATEGORY WITH THE ID : {$current['id']} IS UPDATED.");
+
         return $stmt->rowCount();
     }
 //--------------------------------------------------------------------------------
@@ -92,6 +105,8 @@ class Category{
         $stmt->bindValue(":id", $id, PDO::PARAM_INT);
 
         $stmt->execute();
+
+        $this->logEvent("CATEGORY WITH THE ID : $id IS DELETED.");
 
         return $stmt->rowCount();
     }

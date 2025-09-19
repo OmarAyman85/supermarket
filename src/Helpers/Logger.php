@@ -4,7 +4,7 @@ namespace SuperMarket\Helpers;
 
 trait Logger {
     protected function logEvent(string $message){
-        $logfile = __DIR__ . '/../../storage/app.log';
+        $logfile = __DIR__ . '/../../Storage/Logs/app.log';
         
         date_default_timezone_set('Africa/Cairo');
         $date = date('Y-m-d H:i:s');

@@ -2,7 +2,6 @@
 .env.testing
 
 vendor/
-storage/logs/
 
-brainstorming.txt
-.gitignore
+Storage/Logs/
+app.log

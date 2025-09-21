@@ -50,6 +50,9 @@ SuperMarket/
 │── storage/               # Non-public storage (uploads, logs, cache)
 │   └── logs/
 │        └── app.log
+│   └── Uploads/
+│        └── Categories
+│        └── Products
 │
 │── tests/                 # Pest tests
 │   └── Unit/

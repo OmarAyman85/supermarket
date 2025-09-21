@@ -5,3 +5,5 @@ vendor/
 
 Storage/Logs/
 app.log
+
+Storage/Uploads/

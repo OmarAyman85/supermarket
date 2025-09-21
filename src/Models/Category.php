@@ -3,6 +3,7 @@ namespace SuperMarket\Models;
 
 use SuperMarket\Database\Database;
 use SuperMarket\Helpers\Logger;
+use SuperMarket\Helpers\Uploader;
 use PDO;
 
 class Category{
@@ -10,6 +11,7 @@ class Category{
     private Database $database;
 
     use Logger;
+    use Uploader;
 
     public function __construct(){
         $this->database = new Database();
@@ -20,12 +22,16 @@ class Category{
 //------------------ADDING A NEW CATEGORY-----------------------------------------
 //--------------------------------------------------------------------------------
     public function create(array $data) : int{
-        $sql="INSERT INTO categories (name)
-              VALUES(:name)";
+
+        $imagePath = $this->uploadImage('image', 'Categories');
+
+        $sql="INSERT INTO categories (name, image)
+              VALUES(:name, :image)";
 
         $stmt = $this->conn->prepare($sql);
 
         $stmt->bindValue(":name", $data["name"], PDO::PARAM_STR);
+        $stmt->bindValue(":image", $imagePath, PDO::PARAM_STR);
 
         $stmt->execute();
 

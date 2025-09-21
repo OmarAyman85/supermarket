@@ -44,11 +44,21 @@ if ($match) {
     $controller = new $controllerClass();
 
     if (in_array($requestMethod, ['POST', 'PUT', 'PATCH'])) {
+    $contentType = $_SERVER['CONTENT_TYPE'] ?? '';
+
+    if (strpos($contentType, 'application/json') !== false) {
         $data = json_decode(file_get_contents("php://input"), true) ?? [];
-        call_user_func_array([$controller, $method], array_merge($params, [$data]));
+    } elseif (strpos($contentType, 'multipart/form-data') !== false) {
+        $data = $_POST; 
     } else {
-        call_user_func_array([$controller, $method], $params);
+        $data = [];
     }
+
+    call_user_func_array([$controller, $method], array_merge($params, [$data]));
+} else {
+    call_user_func_array([$controller, $method], $params);
+}
+
 
     $matched = true;
     break;

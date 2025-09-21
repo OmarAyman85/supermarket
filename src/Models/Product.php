@@ -5,6 +5,7 @@ use SuperMarket\Database\Database;
 use SuperMarket\Helpers\Logger;
 use SuperMarket\Helpers\Uploader;
 use PDO;
+use PhpParser\Node\Expr\Print_;
 
 class Product{
     private PDO $conn;
@@ -46,23 +47,64 @@ class Product{
 //--------------------------------------------------------------------------------
 //----------------FETCHING ALL PRODUCTS-------------------------------------------
 //--------------------------------------------------------------------------------
-    public function getAll() : array {
-        $sql = "SELECT p.id AS product_id, p.category_id AS category_id, c.name AS category_name, p.name AS product_name, p.price AS product_price, p.created_at AS product_created_at, c.id AS category_id, p.image AS product_image, c.created_at AS category_created_at 
+    // public function getAll() : array {
+    //         $sql = "SELECT p.id AS product_id, p.category_id AS category_id, c.name AS category_name, p.name AS product_name, p.price AS product_price, p.created_at AS product_created_at, c.id AS category_id, p.image AS product_image, c.created_at AS category_created_at 
+    //                 FROM products AS p
+    //                 JOIN categories AS c
+    //                 ON p.category_id = c.id";
+
+    //         $stmt = $this->conn->query($sql);
+
+    //         $data = [];
+
+    //         while($row = $stmt->fetch(PDO::FETCH_ASSOC)){
+    //             $data[] = $row;
+    //         }
+
+    //         $this->logEvent("FETCHING ALL PRODUCTS IS REQUESTED ...");
+
+    //         return $data;
+    //     }
+//--------------------------------------------------------------------------------
+//----------------FETCHING ALL PRODUCTS WITH PAGINATION---------------------------
+//--------------------------------------------------------------------------------
+    public function getAll(int $page = 1, int $limit = 10) : array {
+        $offset = ($page - 1) * $limit;
+
+        $sql = "SELECT p.id AS product_id, p.category_id AS category_id, c.name AS category_name,
+                p.name AS product_name, p.price AS product_price, p.created_at AS product_created_at, 
+                c.id AS category_id, p.image AS product_image, c.created_at AS category_created_at 
                 FROM products AS p
                 JOIN categories AS c
-                ON p.category_id = c.id";
+                ON p.category_id = c.id
+                ORDER BY p.id ASC
+                LIMIT ? OFFSET ?";
 
-        $stmt = $this->conn->query($sql);
+        $stmt = $this->conn->prepare($sql);
 
-        $data = [];
+        $stmt->bindValue(1, $limit, PDO::PARAM_INT);
+        $stmt->bindValue(2, $offset, PDO::PARAM_INT);
+
+        $stmt->execute();
+
+        $results = [];
 
         while($row = $stmt->fetch(PDO::FETCH_ASSOC)){
-            $data[] = $row;
+            $results[] = $row;
         }
+
+        $countStmt = $this->conn->query("SELECT COUNT(*) as total FROM products");
+        $total = $countStmt->fetch(\PDO::FETCH_ASSOC)['total'];
 
         $this->logEvent("FETCHING ALL PRODUCTS IS REQUESTED ...");
 
-        return $data;
+        return [
+            'data' => $results,
+            'page' => $page,    
+            'limit' => $limit,
+            'total' => (int) $total,
+            'total_pages' => ceil($total / $limit)
+        ];    
     }
 //--------------------------------------------------------------------------------
 //----------------FETCHING A PRODUCT----------------------------------------------

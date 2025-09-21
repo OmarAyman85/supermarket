@@ -3,6 +3,8 @@
 
 vendor/
 
+Storage/
+
 Storage/Logs/
 app.log
 

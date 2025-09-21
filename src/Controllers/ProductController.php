@@ -42,9 +42,13 @@ class ProductController{
 
     //GET /products
     public function index(){
-        $categories = $this->productModel->getAll();
+        $page  = isset($_GET['page']) ? (int) $_GET['page'] : 1;
+        $limit = isset($_GET['limit']) ? (int) $_GET['limit'] : 10;
+
+        $products = $this->productModel->getAll($page, $limit);
+
         header('Content-Type: application/json');
-        echo json_encode($categories, JSON_PRETTY_PRINT);
+        echo json_encode($products, JSON_PRETTY_PRINT);
     }
 
     //GET /products/{:id}

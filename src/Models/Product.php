@@ -3,6 +3,7 @@ namespace SuperMarket\Models;
 
 use SuperMarket\Database\Database;
 use SuperMarket\Helpers\Logger;
+use SuperMarket\Helpers\Uploader;
 use PDO;
 
 class Product{
@@ -10,6 +11,7 @@ class Product{
     private Database $database;
 
     use Logger;
+    use Uploader;
 
     public function __construct(){
         $this->database = new Database();
@@ -21,14 +23,17 @@ class Product{
 //-------------------------------------------------------------------------------
     public function create(array $data) : int {
 
-            $sql = "INSERT INTO products (category_id, name, price)
-                VALUES (:category_id, :name, :price)";
+            $imagePath = $this->uploadImage('image', 'Products');
+
+            $sql = "INSERT INTO products (category_id, name, price, image)
+                VALUES (:category_id, :name, :price, :image)";
 
             $stmt = $this->conn->prepare($sql);
             
             $stmt->bindValue(":category_id", $data['category_id'], PDO::PARAM_INT);
             $stmt->bindValue(":name", $data["name"], PDO::PARAM_STR);
             $stmt->bindValue(":price", $data["price"], PDO::PARAM_STR);
+            $stmt->bindValue(":image", $imagePath, PDO::PARAM_STR);
             
             $stmt->execute();
 
@@ -42,7 +47,7 @@ class Product{
 //----------------FETCHING ALL PRODUCTS-------------------------------------------
 //--------------------------------------------------------------------------------
     public function getAll() : array {
-        $sql = "SELECT p.id AS product_id, p.category_id AS category_id, c.name AS category_name, p.name AS product_name, p.price AS product_price, p.created_at AS product_created_at, c.id AS category_id, c.created_at AS category_created_at 
+        $sql = "SELECT p.id AS product_id, p.category_id AS category_id, c.name AS category_name, p.name AS product_name, p.price AS product_price, p.created_at AS product_created_at, c.id AS category_id, p.image AS product_image, c.created_at AS category_created_at 
                 FROM products AS p
                 JOIN categories AS c
                 ON p.category_id = c.id";
